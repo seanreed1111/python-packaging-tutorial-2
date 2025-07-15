@@ -32,9 +32,9 @@ build: cython
 # 2) Build a wheel archive
 # ──────────────────────────────────────────────────────
 .PHONY: wheel
-wheel: build
-	@echo "→ Building wheel…"
-	$(PYTHON) setup.py bdist_wheel --dist-dir $(DIST_DIR)
+wheel:
+	@echo "→ Building wheel via PEP 517 build…"
+	$(PYTHON) -m build --wheel --outdir $(DIST_DIR)
 
 # ──────────────────────────────────────────────────────
 # 3) Install / reinstall the wheel
