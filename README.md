@@ -33,10 +33,10 @@ python setup.py build_ext --inplace
 
 To build a wheel distribution:
 ```bash
-python -m build
+python -m build --wheel
 ```
 
-To build and install the package:
+To build and install the package in one step:
 ```bash
 pip install .
 ```
