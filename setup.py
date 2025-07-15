@@ -6,6 +6,15 @@ from setuptools import setup, Extension, find_packages
 from Cython.Build import cythonize
 import numpy
 
+# Define build directories for generated files
+BUILD_DIR = "build"
+CYTHON_BUILD_DIR = os.path.join(BUILD_DIR, "cython")
+ANNOTATION_DIR = os.path.join(BUILD_DIR, "annotations")
+
+# Create build directories if they don't exist
+os.makedirs(CYTHON_BUILD_DIR, exist_ok=True)
+os.makedirs(ANNOTATION_DIR, exist_ok=True)
+
 # Define which modules should be compiled as Cython extensions
 cython_modules = [
     "sound.effects.echo",
@@ -34,10 +43,11 @@ for module_name in cython_modules:
             )
         )
 
-# Cythonize the extensions
+# Cythonize the extensions with organized output directories
 if extensions:
     extensions = cythonize(
         extensions,
+        build_dir=CYTHON_BUILD_DIR,  # Put generated C files here
         compiler_directives={
             "boundscheck": False,
             "wraparound": False,
@@ -46,7 +56,19 @@ if extensions:
             "language_level": 3,
         },
         annotate=True,  # Generate HTML annotation files
+        annotate_coverage_xml=os.path.join(ANNOTATION_DIR, "coverage.xml"),
     )
+    
+    # Move annotation files to the annotations directory
+    import shutil
+    import glob
+    
+    # Find and move .html annotation files
+    for html_file in glob.glob("*.html"):
+        if any(module.replace(".", "_") in html_file for module in cython_modules):
+            dest_path = os.path.join(ANNOTATION_DIR, html_file)
+            shutil.move(html_file, dest_path)
+            print(f"Moved annotation file: {html_file} -> {dest_path}")
 
 if __name__ == "__main__":
     setup(

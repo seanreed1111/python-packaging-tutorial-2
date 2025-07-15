@@ -102,6 +102,40 @@ The package automatically compiles Python modules to Cython extensions for bette
 - Compiler optimizations (`-O3`, `-ffast-math`)
 - NumPy integration
 - Cython compiler directives for maximum speed
+- Organized build output:
+  - Generated C files: `build/cython/`
+  - HTML annotation files: `build/annotations/`
+  - Coverage reports: `build/annotations/coverage.xml`
+
+### Build Directory Structure
+
+```
+build/
+├── cython/          # Generated C source files
+│   ├── sound/
+│   │   ├── effects/
+│   │   ├── filters/
+│   │   └── formats/
+├── annotations/     # Cython HTML annotation files
+│   ├── *.html      # Per-module optimization reports
+│   └── coverage.xml # Coverage analysis
+└── lib*/           # Compiled extension modules
+```
+
+### Cleaning Build Files
+
+To remove all generated files and start fresh:
+
+```bash
+python clean.py
+```
+
+This removes:
+- All build directories (`build/`, `dist/`, `sound.egg-info/`)
+- Generated C files (`*.c`)
+- Compiled extensions (`*.so`, `*.pyd`)
+- HTML annotation files (`*.html`)
+- Python cache files
 
 ### Performance
 
