@@ -1,0 +1,11 @@
+# Core dependencies
+numpy
+
+# Build dependencies
+setuptools
+wheel
+Cython
+
+# Development dependencies
+build
+twine 
